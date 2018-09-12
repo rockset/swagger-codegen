@@ -59,24 +59,13 @@ public class JavascriptClientCodegen extends DefaultCodegen implements CodegenCo
     public static final String USE_ES6 = "useES6";
 
     final String[][] JAVASCRIPT_SUPPORTING_FILES = new String[][] {
-            new String[] {"package.mustache", "package.json"},
-            new String[] {"index.mustache", "src/index.js"},
-            new String[] {"ApiClient.mustache", "src/ApiClient.js"},
-            new String[] {"git_push.sh.mustache", "git_push.sh"},
-            new String[] {"README.mustache", "README.md"},
-            new String[] {"mocha.opts", "mocha.opts"},
-            new String[] {"travis.yml", ".travis.yml"}
+            new String[] {"index.mustache", "index.js"},
+            new String[] {"ApiClient.mustache", "ApiClient.js"}
     };
 
     final String[][] JAVASCRIPT_ES6_SUPPORTING_FILES = new String[][] {
-            new String[] {"package.mustache", "package.json"},
-            new String[] {"index.mustache", "src/index.js"},
-            new String[] {"ApiClient.mustache", "src/ApiClient.js"},
-            new String[] {"git_push.sh.mustache", "git_push.sh"},
-            new String[] {"README.mustache", "README.md"},
-            new String[] {"mocha.opts", "mocha.opts"},
-            new String[] {"travis.yml", ".travis.yml"},
-            new String[] {".babelrc.mustache", ".babelrc"}
+            new String[] {"index.mustache", "index.js"},
+            new String[] {"ApiClient.mustache", "ApiClient.js"}
     };
 
     protected String projectName;
@@ -86,7 +75,7 @@ public class JavascriptClientCodegen extends DefaultCodegen implements CodegenCo
     protected String licenseName;
 
     protected String invokerPackage;
-    protected String sourceFolder = "src";
+    protected String sourceFolder = "";
     protected String localVariablePrefix = "";
     protected boolean usePromises;
     protected boolean emitModelMethods;
