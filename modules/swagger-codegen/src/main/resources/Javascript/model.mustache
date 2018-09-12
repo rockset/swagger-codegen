@@ -13,6 +13,7 @@
     root.{{moduleName}}.{{classname}} = factory(root.{{moduleName}}.ApiClient{{#imports}}, root.{{moduleName}}.{{import}}{{/imports}});
   }
 }(this, function(ApiClient{{#imports}}, {{import}}{{/imports}}) {
+    'use strict';
 
 {{#models}}{{#model}}
 {{#isEnum}}{{>partial_model_enum_class}}{{/isEnum}}{{^isEnum}}{{>partial_model_generic}}{{/isEnum}}

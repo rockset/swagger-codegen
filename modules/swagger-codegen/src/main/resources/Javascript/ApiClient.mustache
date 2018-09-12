@@ -13,6 +13,7 @@
     root.{{moduleName}}.ApiClient = factory(root.superagent, root.querystring);
   }
 }(this, function(superagent, querystring) {
+    'use strict';
 
 {{#emitJSDoc}}  /**
    * @module {{#invokerPackage}}{{invokerPackage}}/{{/invokerPackage}}ApiClient
@@ -58,7 +59,8 @@
      * @default {}
      */
 {{/emitJSDoc}}    this.defaultHeaders = {
-      "Authorization": "ApiKey " + apiKey
+      "Authorization": "ApiKey " + apiKey,
+      "X-Rockset-Version": "<projectVersion>"
     };
 
     /**
