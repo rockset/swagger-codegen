@@ -34,7 +34,7 @@ var (
 type APIClient struct {
 	cfg    *Configuration
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
-
+    apiKey string
 	// API Services
 {{#apiInfo}}
 {{#apis}}
@@ -52,13 +52,14 @@ type service struct {
 
 // NewAPIClient creates a new API client. Requires a userAgent string describing your application.
 // optionally a custom http.Client to allow for advanced features such as caching.
-func NewAPIClient(cfg *Configuration) *APIClient {
+func NewAPIClient(cfg *Configuration, apiKey string) *APIClient {
 	if cfg.HTTPClient == nil {
 		cfg.HTTPClient = http.DefaultClient
 	}
 
 	c := &APIClient{}
 	c.cfg = cfg
+    c.apiKey = apiKey
 	c.common.client = c
 
 {{#apiInfo}}
@@ -89,16 +90,8 @@ func selectHeaderContentType(contentTypes []string) string {
 }
 
 // selectHeaderAccept join all accept types and return
-func selectHeaderAccept(accepts []string) string {
-	if len(accepts) == 0 {
-		return ""
-	}
-
-	if contains(accepts, "application/json") {
-		return "application/json"
-	}
-
-	return strings.Join(accepts, ",")
+func (c *APIClient) selectHeaderAuthorization(authorization string) string {
+	return c.apiKey
 }
 
 // contains is a case insenstive match, finding needle in a haystack

@@ -5,6 +5,7 @@ package {{packageName}}
 import (
 	"context"
 	"io/ioutil"
+    "log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -123,16 +124,14 @@ func (a *{{{classname}}}Service) {{{nickname}}}(ctx context.Context{{#hasParams}
 		localVarHeaderParams["Content-Type"] = localVarHttpContentType
 	}
 
-	// to determine the Accept header
-{{=<% %>=}}
-	localVarHttpHeaderAccepts := []string{<%#produces%>"<%&mediaType%>"<%^-last%>, <%/-last%><%/produces%>}
-<%={{ }}=%>
+	// to determine the Api Key header
+    localVarHttpHeaderAuthorization := ""
+	localVarHttpHeaderApiKey := a.client.selectHeaderAuthorization(localVarHttpHeaderAuthorization)
+    if localVarHttpHeaderApiKey == "" {
+        log.Fatal("missing required argument ApiKey")
+    }
+	localVarHeaderParams["authorization"] = "ApiKey " + localVarHttpHeaderApiKey
 
-	// set Accept header
-	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
-	if localVarHttpHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
-	}
 {{#hasHeaderParams}}
 {{#headerParams}}
 	{{#required}}
