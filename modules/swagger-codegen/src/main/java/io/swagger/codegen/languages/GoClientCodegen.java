@@ -83,7 +83,7 @@ public class GoClientCodegen extends AbstractGoCodegen {
         supportingFiles.add(new SupportingFile("client.mustache", "", "client.go"));
         supportingFiles.add(new SupportingFile("response.mustache", "", "response.go"));
 
-        if(additionalProperties.containsKey(WITH_XML)) {
+        if (additionalProperties.containsKey(WITH_XML)) {
             setWithXml(Boolean.parseBoolean(additionalProperties.get(WITH_XML).toString()));
             if ( withXml ) {
                 additionalProperties.put(WITH_XML, "true");
