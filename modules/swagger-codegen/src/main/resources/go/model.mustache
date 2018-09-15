@@ -1,10 +1,13 @@
 {{>partial_header}}
 package {{packageName}}
-{{#models}}{{#imports}}
-import ({{/imports}}
-    {{#imports}}"{{import}}"{{/imports}}{{#imports}}
+{{#models}}
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    {{#imports}}"{{import}}"{{/imports}}
 )
-{{/imports}}{{#model}}{{#isEnum}}{{#description}}// {{{classname}}} : {{{description}}}{{/description}}
+{{#model}}{{#isEnum}}{{#description}}// {{{classname}}} : {{{description}}}{{/description}}
 type {{{classname}}} {{^format}}{{dataType}}{{/format}}{{#format}}{{{format}}}{{/format}}
 
 // List of {{{name}}}
@@ -28,4 +31,15 @@ type {{classname}} struct {
 	{{name}} {{^isEnum}}{{^isPrimitiveType}}{{^isContainer}}{{^isDateTime}}*{{/isDateTime}}{{/isContainer}}{{/isPrimitiveType}}{{/isEnum}}{{{datatype}}} `json:"{{baseName}}{{^required}},omitempty{{/required}}"{{#withXml}} xml:"{{baseName}}"{{/withXml}}`
 {{/vars}}
 }{{/isEnum}}
+func (m {{{classname}}}) PrintResponse() {
+    r, err := json.Marshal(m)
+    var out bytes.Buffer
+    err = json.Indent(&out, []byte(string(r)), "", "    ")
+    if err != nil {
+        fmt.Println("error parsing string")
+        return
+    }
+
+    fmt.Println(out.String())
+}
 {{/model}}{{/models}}
