@@ -3,6 +3,9 @@ package {{packageName}}
 
 {{#operations}}
 import (
+    "bufio"
+    "bytes"
+    "encoding/json"
 	"io/ioutil"
     "log"
 	"net/http"
@@ -235,5 +238,188 @@ func (a *{{{classname}}}Service) {{{nickname}}}({{#allParams}}{{#required}}{{par
 	}
 
 	return {{#returnType}}localVarReturnValue, {{/returnType}}localVarHttpResponse, nil
+}
+
+func (a *{{{classname}}}Service) {{{nickname}}}Stream({{#allParams}}{{#required}}{{paramName}} {{{dataType}}}{{#hasMore}}, {{/hasMore}}{{/required}}{{/allParams}}{{#hasOptionalParams}}localVarOptionals *{{{nickname}}}Opts{{/hasOptionalParams}}) (string, *http.Response, error) {
+	var (
+		localVarHttpMethod = strings.ToUpper("{{httpMethod}}")
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+        localVarBody []byte
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "{{{path}}}"{{#pathParams}}
+	localVarPath = strings.Replace(localVarPath, "{"+"{{baseName}}"+"}", fmt.Sprintf("%v", {{paramName}}), -1){{/pathParams}}
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	{{#allParams}}
+	{{#required}}
+	{{#minItems}}
+	if len({{paramName}}) < {{minItems}} {
+		return "", nil, reportError("{{paramName}} must have at least {{minItems}} elements")
+	}
+	{{/minItems}}
+	{{#maxItems}}
+	if len({{paramName}}) > {{maxItems}} {
+		return "", nil, reportError("{{paramName}} must have less than {{maxItems}} elements")
+	}
+	{{/maxItems}}
+	{{#minLength}}
+	if strlen({{paramName}}) < {{minLength}} {
+		return "", nil, reportError("{{paramName}} must have at least {{minLength}} elements")
+	}
+	{{/minLength}}
+	{{#maxLength}}
+	if strlen({{paramName}}) > {{maxLength}} {
+		return "", nil, reportError("{{paramName}} must have less than {{maxLength}} elements")
+	}
+	{{/maxLength}}
+	{{#minimum}}
+	{{#isString}}
+	{{paramName}}Txt, err := atoi({{paramName}})
+	if {{paramName}}Txt < {{minimum}} {
+	{{/isString}}
+	{{^isString}}
+	if {{paramName}} < {{minimum}} {
+	{{/isString}}
+		return "", nil, reportError("{{paramName}} must be greater than {{minimum}}")
+	}
+	{{/minimum}}
+	{{#maximum}}
+	{{#isString}}
+	{{paramName}}Txt, err := atoi({{paramName}})
+	if {{paramName}}Txt > {{maximum}} {
+	{{/isString}}
+	{{^isString}}
+	if {{paramName}} > {{maximum}} {
+	{{/isString}}
+		return "", nil, reportError("{{paramName}} must be less than {{maximum}}")
+	}
+	{{/maximum}}
+	{{/required}}
+	{{/allParams}}
+
+	{{#hasQueryParams}}
+	{{#queryParams}}
+	{{#required}}
+	localVarQueryParams.Add("{{baseName}}", parameterToString({{paramName}}, "{{#collectionFormat}}{{collectionFormat}}{{/collectionFormat}}"))
+	{{/required}}
+	{{^required}}
+	if localVarOptionals != nil && localVarOptionals.{{vendorExtensions.x-exportParamName}}.IsSet() {
+		localVarQueryParams.Add("{{baseName}}", parameterToString(localVarOptionals.{{vendorExtensions.x-exportParamName}}.Value(), "{{#collectionFormat}}{{collectionFormat}}{{/collectionFormat}}"))
+	}
+	{{/required}}
+	{{/queryParams}}
+	{{/hasQueryParams}}
+	// to determine the Content-Type header
+{{=<% %>=}}
+	localVarHttpContentTypes := []string{<%#consumes%>"<%&mediaType%>"<%^-last%>, <%/-last%><%/consumes%>}
+<%={{ }}=%>
+
+	// set Content-Type header
+	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
+	if localVarHttpContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHttpContentType
+	}
+
+	// to determine the Api Key header
+    localVarHttpHeaderAuthorization := ""
+	localVarHttpHeaderApiKey := a.client.selectHeaderAuthorization(localVarHttpHeaderAuthorization)
+    if localVarHttpHeaderApiKey == "" {
+        log.Fatal("missing required argument ApiKey")
+    }
+	localVarHeaderParams["authorization"] = "ApiKey " + localVarHttpHeaderApiKey
+
+{{#hasHeaderParams}}
+{{#headerParams}}
+	{{#required}}
+	localVarHeaderParams["{{baseName}}"] = parameterToString({{paramName}}, "{{#collectionFormat}}{{collectionFormat}}{{/collectionFormat}}")
+	{{/required}}
+	{{^required}}
+	if localVarOptionals != nil && localVarOptionals.{{vendorExtensions.x-exportParamName}}.IsSet() {
+		localVarHeaderParams["{{baseName}}"] = parameterToString(localVarOptionals.{{vendorExtensions.x-exportParamName}}.Value(), "{{#collectionFormat}}{{collectionFormat}}{{/collectionFormat}}")
+	}
+	{{/required}}
+{{/headerParams}}
+{{/hasHeaderParams}}
+{{#hasFormParams}}
+{{#formParams}}
+{{#isFile}}
+{{^required}}
+	var localVarFile {{dataType}}
+	if localVarOptionals != nil && localVarOptionals.{{vendorExtensions.x-exportParamName}}.IsSet() {
+		localVarFileOk := false
+		localVarFile, localVarFileOk = localVarOptionals.{{vendorExtensions.x-exportParamName}}.Value().({{dataType}})
+		if !localVarFileOk {
+				return "", nil, reportError("{{paramName}} should be {{dataType}}")
+		}
+	}
+{{/required}}
+	if localVarFile != nil {
+		fbs, _ := ioutil.ReadAll(localVarFile)
+		localVarFileBytes = fbs
+		localVarFileName = localVarFile.Name()
+		localVarFile.Close()
+	}
+{{/isFile}}
+{{^isFile}}
+{{#required}}
+	localVarFormParams.Add("{{baseName}}", parameterToString({{paramName}}, "{{#collectionFormat}}{{collectionFormat}}{{/collectionFormat}}"))
+{{/required}}
+{{^required}}
+	if localVarOptionals != nil && localVarOptionals.{{vendorExtensions.x-exportParamName}}.IsSet() {
+		localVarFormParams.Add("{{baseName}}", parameterToString(localVarOptionals.{{vendorExtensions.x-exportParamName}}.Value(), "{{#collectionFormat}}{{collectionFormat}}{{/collectionFormat}}"))
+	}
+{{/required}}
+{{/isFile}}
+{{/formParams}}
+{{/hasFormParams}}
+{{#hasBodyParam}}
+{{#bodyParams}}	// body params
+{{#required}}
+	localVarPostBody = &{{paramName}}
+{{/required}}
+{{^required}}
+	if localVarOptionals != nil && localVarOptionals.{{vendorExtensions.x-exportParamName}}.IsSet() {
+		{{#isPrimitiveType}}localVarPostBody = &localVarOptionals.{{vendorExtensions.x-exportParamName}}.Value(){{/isPrimitiveType}}
+		{{^isPrimitiveType}}localVarOptional{{vendorExtensions.x-exportParamName}}, localVarOptional{{vendorExtensions.x-exportParamName}}ok := localVarOptionals.{{vendorExtensions.x-exportParamName}}.Value().({{{dataType}}})
+		if !localVarOptional{{vendorExtensions.x-exportParamName}}ok {
+				return "", nil, reportError("{{paramName}} should be {{dataType}}")
+		}
+		localVarPostBody = &localVarOptional{{vendorExtensions.x-exportParamName}}{{/isPrimitiveType}}
+	}
+{{/required}}
+{{/bodyParams}}
+{{/hasBodyParam}}
+{{#authMethods}}
+{{/authMethods}}
+	r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return "", nil, err
+	}
+
+	localVarHttpResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHttpResponse == nil {
+		return "", localVarHttpResponse, err
+	}
+
+    reader := bufio.NewReader(localVarHttpResponse.Body)
+    localVarBody, err= reader.ReadBytes('\n')
+
+    var out bytes.Buffer
+    err = json.Indent(&out, []byte(string(localVarBody)), "", "    ")
+    if err != nil {
+        return "", localVarHttpResponse, err
+    }
+
+    if localVarHttpResponse.StatusCode >= 300 {
+		return out.String(), localVarHttpResponse, nil
+	}
+
+	return out.String(), localVarHttpResponse, nil
 }
 {{/operation}}{{/operations}}
