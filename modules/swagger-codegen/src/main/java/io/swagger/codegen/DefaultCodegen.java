@@ -2060,6 +2060,13 @@ public class DefaultCodegen {
             }
         }
         operationId = removeNonNameElementToCamelCase(operationId);
+        for (int i = 0; i < operationId.length(); i++) {
+            if (Character.isUpperCase(operationId.charAt(i))) {
+                operationId = operationId.substring(0, i);
+                break;
+            }
+        }
+
         op.path = path;
         op.operationId = toOperationId(operationId);
         op.summary = escapeText(operation.getSummary());

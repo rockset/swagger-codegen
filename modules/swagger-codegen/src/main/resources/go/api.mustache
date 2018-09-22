@@ -15,7 +15,7 @@ import (
 {{/imports}}
 )
 
-type {{classname}}Service service
+type {{classname}}Service Service
 {{#operation}}
 
 /* 
@@ -44,7 +44,7 @@ func (a *{{{classname}}}Service) {{{nickname}}}({{#allParams}}{{#required}}{{par
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "{{{path}}}"{{#pathParams}}
+	localVarPath := a.Client.cfg.BasePath + "{{{path}}}"{{#pathParams}}
 	localVarPath = strings.Replace(localVarPath, "{"+"{{baseName}}"+"}", fmt.Sprintf("%v", {{paramName}}), -1){{/pathParams}}
 
 	localVarHeaderParams := make(map[string]string)
@@ -122,7 +122,7 @@ func (a *{{{classname}}}Service) {{{nickname}}}({{#allParams}}{{#required}}{{par
 
 	// to determine the Api Key header
     localVarHttpHeaderAuthorization := ""
-	localVarHttpHeaderApiKey := a.client.selectHeaderAuthorization(localVarHttpHeaderAuthorization)
+	localVarHttpHeaderApiKey := a.Client.selectHeaderAuthorization(localVarHttpHeaderAuthorization)
     if localVarHttpHeaderApiKey == "" {
         log.Fatal("missing required argument ApiKey")
     }
@@ -191,12 +191,12 @@ func (a *{{{classname}}}Service) {{{nickname}}}({{#allParams}}{{#required}}{{par
 {{/hasBodyParam}}
 {{#authMethods}}
 {{/authMethods}}
-	r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	r, err := a.Client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return {{#returnType}}localVarReturnValue, {{/returnType}}nil, err
 	}
 
-	localVarHttpResponse, err := a.client.callAPI(r)
+	localVarHttpResponse, err := a.Client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return {{#returnType}}localVarReturnValue, {{/returnType}}localVarHttpResponse, err
 	}
@@ -210,7 +210,7 @@ func (a *{{{classname}}}Service) {{{nickname}}}({{#allParams}}{{#required}}{{par
 	{{#returnType}}
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
-		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
+		err = a.Client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
 		if err == nil { 
 			return {{#returnType}}localVarReturnValue, {{/returnType}}localVarHttpResponse, err
 		}
@@ -225,7 +225,7 @@ func (a *{{{classname}}}Service) {{{nickname}}}({{#allParams}}{{#required}}{{par
 		{{#responses}}{{#dataType}}
 		if localVarHttpResponse.StatusCode == {{{code}}} {
 			var v {{{dataType}}}
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
+			err = a.Client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
 				if err != nil {
 					newErr.error = err.Error()
 					return {{#returnType}}localVarReturnValue, {{/returnType}}localVarHttpResponse, newErr
@@ -250,7 +250,7 @@ func (a *{{{classname}}}Service) {{{nickname}}}Stream({{#allParams}}{{#required}
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "{{{path}}}"{{#pathParams}}
+	localVarPath := a.Client.cfg.BasePath + "{{{path}}}"{{#pathParams}}
 	localVarPath = strings.Replace(localVarPath, "{"+"{{baseName}}"+"}", fmt.Sprintf("%v", {{paramName}}), -1){{/pathParams}}
 
 	localVarHeaderParams := make(map[string]string)
@@ -328,7 +328,7 @@ func (a *{{{classname}}}Service) {{{nickname}}}Stream({{#allParams}}{{#required}
 
 	// to determine the Api Key header
     localVarHttpHeaderAuthorization := ""
-	localVarHttpHeaderApiKey := a.client.selectHeaderAuthorization(localVarHttpHeaderAuthorization)
+	localVarHttpHeaderApiKey := a.Client.selectHeaderAuthorization(localVarHttpHeaderAuthorization)
     if localVarHttpHeaderApiKey == "" {
         log.Fatal("missing required argument ApiKey")
     }
@@ -397,12 +397,12 @@ func (a *{{{classname}}}Service) {{{nickname}}}Stream({{#allParams}}{{#required}
 {{/hasBodyParam}}
 {{#authMethods}}
 {{/authMethods}}
-	r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	r, err := a.Client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return "", nil, err
 	}
 
-	localVarHttpResponse, err := a.client.callAPI(r)
+	localVarHttpResponse, err := a.Client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return "", localVarHttpResponse, err
 	}
