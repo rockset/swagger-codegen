@@ -749,6 +749,9 @@ public class JavascriptClientCodegen extends DefaultCodegen implements CodegenCo
 
         // method name cannot use reserved keyword, e.g. return
         if (isReservedWord(operationId)) {
+            if (operationId.equals("delete")) {
+                return "remove";
+            }
             String newOperationId = camelize("call_" + operationId, true);
             LOGGER.warn(operationId + " (reserved word) cannot be used as method name. Renamed to " + newOperationId);
             return newOperationId;

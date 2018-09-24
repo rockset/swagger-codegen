@@ -8,11 +8,11 @@
   }
 }(function(ApiClient{{#models}}{{#model}}, {{classFilename}}{{/model}}{{/models}}{{#apiInfo}}{{#apis}}, {{importPath}}{{/apis}}{{/apiInfo}}) {
     'use strict';
-{{=< >=}}  var exports = function(apiKey){
+{{=< >=}}  var exports = function(apiKey, apiServer){
     if (apiKey === undefined || apiKey === null) {
       throw new Error("Missing required argument 'apiKey'");
     }
-    var apiClient = new ApiClient(apiKey);
+    var apiClient = new ApiClient(apiKey, apiServer);
 
     return {
       version: "<projectVersion>"<#apiInfo><#apis>,
