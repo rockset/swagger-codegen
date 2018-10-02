@@ -58,10 +58,11 @@ public class JavaClientCodegen extends AbstractJavaCodegen
         super();
         outputFolder = "generated-code" + File.separator + "java";
         embeddedTemplateDir = templateDir = "Java";
-        invokerPackage = "io.swagger.client";
-        artifactId = "swagger-java-client";
-        apiPackage = "io.swagger.client.api";
-        modelPackage = "io.swagger.client.model";
+        invokerPackage = "io.rockset.client";
+        artifactId = "rockset-java";
+        groupId = "io.rockset";
+        apiPackage = "io.rockset.client.api";
+        modelPackage = "io.rockset.client.model";
 
         cliOptions.add(CliOption.newBoolean(USE_RX_JAVA, "Whether to use the RxJava adapter with the retrofit2 library."));
         cliOptions.add(CliOption.newBoolean(USE_RX_JAVA2, "Whether to use the RxJava2 adapter with the retrofit2 library."));
@@ -188,7 +189,6 @@ public class JavaClientCodegen extends AbstractJavaCodegen
                 gradleWrapperPackage.replace( ".", File.separator ), "gradle-wrapper.properties") );
         supportingFiles.add(new SupportingFile( "gradle-wrapper.jar",
                 gradleWrapperPackage.replace( ".", File.separator ), "gradle-wrapper.jar") );
-        supportingFiles.add(new SupportingFile("git_push.sh.mustache", "", "git_push.sh"));
         supportingFiles.add(new SupportingFile("gitignore.mustache", "", ".gitignore"));
 
         if (performBeanValidation) {

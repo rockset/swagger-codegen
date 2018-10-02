@@ -54,6 +54,7 @@ import {{invokerPackage}}.auth.OAuth;
 public class ApiClient {
 
     private String basePath = "{{{basePath}}}";
+    private String apiKey;
     private boolean debugging = false;
     private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
     private String tempFolderPath = null;
@@ -116,8 +117,19 @@ public class ApiClient {
      * @param basePath Base path of the URL (e.g {{{basePath}}}
      * @return An instance of OkHttpClient
      */
-    public ApiClient setBasePath(String basePath) {
+    public ApiClient setApiServer(String basePath) {
         this.basePath = basePath;
+        return this;
+    }
+
+    /**
+     * Set api key
+     *
+     * @param apiKey api key of the user
+     * @return An instance of OkHttpClient
+     */
+    public ApiClient setApiKey(String apiKey) {
+        this.apiKey = apiKey;
         return this;
     }
 
@@ -313,51 +325,6 @@ public class ApiClient {
             }
         }
         throw new RuntimeException("No HTTP basic authentication configured!");
-    }
-
-    /**
-     * Helper method to set API key value for the first API key authentication.
-     *
-     * @param apiKey API key
-     */
-    public void setApiKey(String apiKey) {
-        for (Authentication auth : authentications.values()) {
-            if (auth instanceof ApiKeyAuth) {
-                ((ApiKeyAuth) auth).setApiKey(apiKey);
-                return;
-            }
-        }
-        throw new RuntimeException("No API key authentication configured!");
-    }
-
-    /**
-     * Helper method to set API key prefix for the first API key authentication.
-     *
-     * @param apiKeyPrefix API key prefix
-     */
-    public void setApiKeyPrefix(String apiKeyPrefix) {
-        for (Authentication auth : authentications.values()) {
-            if (auth instanceof ApiKeyAuth) {
-                ((ApiKeyAuth) auth).setApiKeyPrefix(apiKeyPrefix);
-                return;
-            }
-        }
-        throw new RuntimeException("No API key authentication configured!");
-    }
-
-    /**
-     * Helper method to set access token for the first OAuth2 authentication.
-     *
-     * @param accessToken Access token
-     */
-    public void setAccessToken(String accessToken) {
-        for (Authentication auth : authentications.values()) {
-            if (auth instanceof OAuth) {
-                ((OAuth) auth).setAccessToken(accessToken);
-                return;
-            }
-        }
-        throw new RuntimeException("No OAuth2 authentication configured!");
     }
 
     /**
@@ -1092,6 +1059,8 @@ public class ApiClient {
                 reqBuilder.header(header.getKey(), parameterToString(header.getValue()));
             }
         }
+
+        reqBuilder.header("Authorization", "ApiKey " + apiKey);
     }
 
     /**
