@@ -54,7 +54,7 @@ class {{classname}}({{#parent}}{{parent}}{{/parent}}{{^parent}}object{{/parent}}
     }
 {{/discriminator}}
 
-    def __init__(self{{#vars}}, {{name}}={{#defaultValue}}{{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}None{{/defaultValue}}{{/vars}}):  # noqa: E501
+    def __init__(self, {{#vars}}{{#required}}{{name}}, {{/required}}{{/vars}}**kwargs):  # noqa: E501
         """{{classname}} - a model defined in Swagger"""  # noqa: E501
 {{#vars}}{{#-first}}
 {{/-first}}
@@ -67,8 +67,7 @@ class {{classname}}({{#parent}}{{parent}}{{/parent}}{{^parent}}object{{/parent}}
         self.{{name}} = {{name}}
 {{/required}}
 {{^required}}
-        if {{name}} is not None:
-            self.{{name}} = {{name}}
+        self.{{name}} = kwargs.pop('{{name}}', None)
 {{/required}}
 {{/vars}}
 
