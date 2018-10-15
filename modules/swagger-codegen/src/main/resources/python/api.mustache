@@ -182,14 +182,12 @@ class {{classname}}(object):
 {{/bodyParam}}
         {{#hasProduces}}
         # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.select_header_accept(
-            [{{#produces}}'{{{mediaType}}}'{{#hasMore}}, {{/hasMore}}{{/produces}}])  # noqa: E501
+        header_params['Accept'] = {{#produces}}'{{{mediaType}}}'{{/produces}} # noqa: E501
 
         {{/hasProduces}}
         {{#hasConsumes}}
         # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
-            [{{#consumes}}'{{{mediaType}}}'{{#hasMore}}, {{/hasMore}}{{/consumes}}])  # noqa: E501
+        header_params['Content-Type'] = {{#consumes}}'{{{mediaType}}}'{{/consumes}}  # noqa: E501
 
         {{/hasConsumes}}
         # Authentication setting
