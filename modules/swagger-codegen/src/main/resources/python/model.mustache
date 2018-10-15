@@ -219,5 +219,11 @@ class {{classname}}({{#parent}}{{parent}}{{/parent}}{{^parent}}object{{/parent}}
 
     def get(self, item):
         return getattr(self, item)
+
+    def items(self):
+        return self.to_dict().items()
+
+    def __setitem__(self, item, value):
+        return seattr(self, item, value)
 {{/model}}
 {{/models}}
