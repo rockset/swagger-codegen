@@ -58,11 +58,11 @@ public class JavaClientCodegen extends AbstractJavaCodegen
         super();
         outputFolder = "generated-code" + File.separator + "java";
         embeddedTemplateDir = templateDir = "Java";
-        invokerPackage = "io.rockset.client";
+        invokerPackage = "com.rockset.client";
         artifactId = "rockset-java";
-        groupId = "io.rockset";
-        apiPackage = "io.rockset.client.api";
-        modelPackage = "io.rockset.client.model";
+        groupId = "com.rockset";
+        apiPackage = "com.rockset.client.api";
+        modelPackage = "com.rockset.client.model";
 
         cliOptions.add(CliOption.newBoolean(USE_RX_JAVA, "Whether to use the RxJava adapter with the retrofit2 library."));
         cliOptions.add(CliOption.newBoolean(USE_RX_JAVA2, "Whether to use the RxJava2 adapter with the retrofit2 library."));

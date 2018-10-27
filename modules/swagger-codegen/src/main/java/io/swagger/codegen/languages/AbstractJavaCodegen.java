@@ -60,8 +60,8 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
     protected boolean supportAsync = false;
     protected boolean java8Mode = false;
     protected boolean withXml = false;
-    protected String invokerPackage = "io.rockset";
-    protected String groupId = "io.rockset";
+    protected String invokerPackage = "com.rockset";
+    protected String groupId = "com.rockset";
     protected String artifactId = "rockset-java";
     protected String artifactVersion = "1.0.0";
     protected String artifactUrl = "https://github.com/rockset/rockset-java-client";
