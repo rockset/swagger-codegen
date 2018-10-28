@@ -333,6 +333,10 @@ func (a *{{{classname}}}Service) {{{nickname}}}Stream({{#allParams}}{{#required}
         log.Fatal("missing required argument ApiKey")
     }
 	localVarHeaderParams["authorization"] = "ApiKey " + localVarHttpHeaderApiKey
+    
+    // version
+    localVarVersion := a.Client.selectVersion()
+	localVarHeaderParams["x-rockset-version"] = localVarVersion 
 
 {{#hasHeaderParams}}
 {{#headerParams}}
