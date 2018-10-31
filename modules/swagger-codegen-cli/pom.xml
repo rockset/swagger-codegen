@@ -51,7 +51,7 @@
                             <minimizeJar>false</minimizeJar>
                             <createDependencyReducedPom>true</createDependencyReducedPom>
                             <dependencyReducedPomLocation>
-                                ${java.io.tmpdir}/dependency-reduced-pom.xml
+                                ${project.build.directory}/dependency-reduced-pom.xml
                             </dependencyReducedPomLocation>
                             <transformers>
                                 <transformer
