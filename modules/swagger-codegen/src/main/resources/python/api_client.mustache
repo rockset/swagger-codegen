@@ -72,8 +72,13 @@ class ApiClient(object):
         self.user_agent = '{{#httpUserAgent}}{{{.}}}{{/httpUserAgent}}{{^httpUserAgent}}Swagger-Codegen/{{{packageVersion}}}/python{{/httpUserAgent}}'
 
     def __del__(self):
-        self.pool.close()
-        self.pool.join()
+        try:
+            pool = self.pool
+        except AttributeError:
+            return
+        if pool is not None:
+            pool.close()
+            pool.join()
 
     @property
     def user_agent(self):
