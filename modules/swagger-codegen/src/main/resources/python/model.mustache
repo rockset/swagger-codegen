@@ -96,35 +96,6 @@ class {{classname}}({{#parent}}{{parent}}{{/parent}}{{^parent}}object{{/parent}}
         :param {{name}}: The {{name}} of this {{classname}}.  # noqa: E501
         :type: {{datatype}}
         """
-{{#isEnum}}
-{{#isContainer}}
-        allowed_values = [{{#allowableValues}}{{#values}}{{#items.isString}}"{{/items.isString}}{{{this}}}{{#items.isString}}"{{/items.isString}}{{^-last}}, {{/-last}}{{/values}}{{/allowableValues}}]  # noqa: E501
-{{#isListContainer}}
-        if {{{name}}} is not None and not set({{{name}}}).issubset(set(allowed_values)):
-            raise ValueError(
-                "Invalid values for `{{{name}}}` [{0}], must be a subset of [{1}]"  # noqa: E501
-                .format(", ".join(map(str, set({{{name}}}) - set(allowed_values))),  # noqa: E501
-                        ", ".join(map(str, allowed_values)))
-            )
-{{/isListContainer}}
-{{#isMapContainer}}
-        if not set({{{name}}}.keys()).issubset(set(allowed_values)):
-            raise ValueError(
-                "Invalid keys in `{{{name}}}` [{0}], must be a subset of [{1}]"  # noqa: E501
-                .format(", ".join(map(str, set({{{name}}}.keys()) - set(allowed_values))),  # noqa: E501
-                        ", ".join(map(str, allowed_values)))
-            )
-{{/isMapContainer}}
-{{/isContainer}}
-{{^isContainer}}
-        allowed_values = [{{#allowableValues}}{{#values}}{{#isString}}"{{/isString}}{{{this}}}{{#isString}}"{{/isString}}{{^-last}}, {{/-last}}{{/values}}{{/allowableValues}}]  # noqa: E501
-        if {{{name}}} not in allowed_values and {{{name}}} is not None:
-            raise ValueError(
-                "Invalid value for `{{{name}}}` ({0}), must be one of {1}"  # noqa: E501
-                .format({{{name}}}, allowed_values)
-            )
-{{/isContainer}}
-{{/isEnum}}
 {{^isEnum}}
 {{#hasValidation}}
 {{#maxLength}}
