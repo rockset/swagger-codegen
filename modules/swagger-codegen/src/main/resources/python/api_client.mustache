@@ -54,7 +54,8 @@ class ApiClient(object):
         'object': object,
     }
 
-    def __init__(self, api_key, api_server, version, configuration=None, header_name=None, header_value=None,
+    def __init__(self, api_key, api_server, version, user_agent,
+                configuration=None, header_name=None, header_value=None,
                  cookie=None):
         if configuration is None:
             configuration = Configuration()
@@ -67,9 +68,8 @@ class ApiClient(object):
             self.default_headers[header_name] = header_value
         self.default_headers["Authorization"] = "ApiKey " + api_key
         self.default_headers["x-rockset-version"] = version
+        self.default_headers["User-Agent"] = user_agent
         self.cookie = cookie
-        # Set default User-Agent.
-        self.user_agent = '{{#httpUserAgent}}{{{.}}}{{/httpUserAgent}}{{^httpUserAgent}}Swagger-Codegen/{{{packageVersion}}}/python{{/httpUserAgent}}'
 
     def __del__(self):
         try:
