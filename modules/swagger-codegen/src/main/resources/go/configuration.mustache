@@ -48,13 +48,14 @@ type Configuration struct {
 	DefaultHeader map[string]string `json:"defaultHeader,omitempty"`
 	UserAgent     string            `json:"userAgent,omitempty"`
 	HTTPClient    *http.Client
+    Version       string
 }
 
 func NewConfiguration() *Configuration {
 	cfg := &Configuration{
 		BasePath:      "{{{basePath}}}",
 		DefaultHeader: make(map[string]string),
-		UserAgent:     "{{#httpUserAgent}}{{{.}}}{{/httpUserAgent}}{{^httpUserAgent}}Swagger-Codegen/{{{packageVersion}}}/go{{/httpUserAgent}}",
+		UserAgent:     "go",
 	}
 	return cfg
 }
