@@ -1073,7 +1073,7 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
             // add f to number, e.g. 3.14 => 3.14f
             return value + "f";
         } else {
-            return "\"" + escapeText(value) + "\"";
+            return "\"" + escapeText(value).replaceAll("_", "") + "\"";
         }
     }
 
