@@ -1,0 +1,5 @@
+{
+    "phabricator.uri": "https://rockset.phacility.com/",
+    "load": [],
+    "arc.feature.start.default": "origin/master"
+}
