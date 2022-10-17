@@ -922,6 +922,7 @@ public class ApiClient {
                     final ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true);
                     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                    objectMapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
                     errorModel = objectMapper.readValue(respBody, ErrorModel.class);
 
                 } catch (final IOException e) {
