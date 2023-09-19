@@ -2,6 +2,7 @@
 
 package {{invokerPackage}};
 
+import com.rockset.client.auth.ApiKeyAuth;
 import com.rockset.client.model.ErrorModel;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -86,12 +87,11 @@ public class ApiClient {
         httpClient = new OkHttpClient.Builder()
                 .connectTimeout(140, TimeUnit.SECONDS)
                 .readTimeout(140, TimeUnit.SECONDS)
-                .build();
-
         {{#useGzipFeature}}
         // Enable gzip request compression
-        httpClient.interceptors().add(new GzipRequestInterceptor());
+        .addInterceptor(new GzipRequestInterceptor());
         {{/useGzipFeature}}
+                .build();
 
         verifyingSsl = true;
 
@@ -382,9 +382,11 @@ public class ApiClient {
             if (debugging) {
                 loggingInterceptor = new HttpLoggingInterceptor();
                 loggingInterceptor.setLevel(Level.BODY);
-                httpClient.interceptors().add(loggingInterceptor);
+                setHttpClient(getHttpClient().newBuilder().addInterceptor(loggingInterceptor).build());
             } else {
-                httpClient.interceptors().remove(loggingInterceptor);
+                OkHttpClient.Builder client = getHttpClient().newBuilder();
+                client.interceptors().remove(loggingInterceptor);
+                setHttpClient(client.build());
                 loggingInterceptor = null;
             }
         }
